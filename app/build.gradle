@@ -28,6 +28,8 @@ android {
         viewBinding true
     }
 
+    namespace 'illyan.jay'
+
     defaultConfig {
         applicationId "illyan.jay"
         minSdk 31
@@ -51,7 +53,10 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-    namespace 'illyan.jay'
+
+    lintOptions {
+        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent"
+    }
 }
 
 dependencies {
@@ -121,7 +126,7 @@ dependencies {
     implementation 'com.google.maps.android:maps-utils-ktx:3.3.0' // KTX for the Maps SDK for Android Utility Library
 
     // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+    implementation platform('com.google.firebase:firebase-bom:30.0.0')
 
     // Declare the dependencies for the Remote Config and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
