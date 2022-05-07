@@ -44,8 +44,8 @@ jobs:
       run: echo $DATA > app/google-services.json
 
     - name: Grant execute permission for gradlew
-#      run: chmod +x gradlew
+      run: chmod +x gradlew
 #    - name: Build with Gradle
-      run: ./gradlew build
+#      run: ./gradlew build
     - name: Run Unit tests
       run: bash ./gradlew test
