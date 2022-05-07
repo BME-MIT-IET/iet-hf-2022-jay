@@ -48,4 +48,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Unit tests
-      run: bash ./gradlew test --stacktrace
+      run: bash ./gradlew test
