@@ -29,6 +29,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
+    - name: Create local properties file
+      run: touch local.properties
+
+    - name: Add Google Maps Api key
+      run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> local.properties
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
