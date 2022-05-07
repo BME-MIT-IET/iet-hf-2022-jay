@@ -99,12 +99,10 @@ class SessionInteractor @Inject constructor(
 	 *
 	 * @return number of sessions stopped.
 	 */
-	suspend fun stopOngoingSessions(): Int {
-		var sessionsStopped = 0
+	suspend fun stopOngoingSessions() {
 		getOngoingSessions().first {
-			sessionsStopped = sessionDiskDataSource.stopSessions(it)
+			sessionDiskDataSource.stopSessions(it)
 			true
 		}
-		return sessionsStopped
 	}
 }

@@ -21,6 +21,12 @@ interface RotationDao {
 	@Insert
 	fun insertRotations(rotations: List<RoomRotation>)
 
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertRotation(rotation: RoomRotation): Long
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertRotations(rotations: List<RoomRotation>)
+
 	@Query("SELECT * FROM rotation")
 	fun getRotations(): Flow<List<RoomRotation>>
 

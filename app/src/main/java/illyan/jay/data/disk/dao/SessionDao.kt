@@ -10,6 +10,7 @@
 package illyan.jay.data.disk.dao
 
 import androidx.room.*
+import illyan.jay.data.disk.model.RoomAcceleration
 import illyan.jay.data.disk.model.RoomSession
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +20,13 @@ interface SessionDao {
 	fun insertSession(session: RoomSession): Long
 
 	@Insert
-	fun insertSessions(sessions: RoomSession)
+	fun insertSessions(sessions: List<RoomSession>)
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertSession(session: RoomSession): Long
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertSessions(sessions: List<RoomSession>)
 
 	@Query("SELECT * FROM session")
 	fun getSessions(): Flow<List<RoomSession>>

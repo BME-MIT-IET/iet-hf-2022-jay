@@ -11,6 +11,7 @@ package illyan.jay.data.disk.dao
 
 import androidx.room.*
 import illyan.jay.data.disk.model.RoomLocation
+import illyan.jay.data.disk.model.RoomRotation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,6 +21,12 @@ interface LocationDao {
 
 	@Insert
 	fun insertLocations(locations: List<RoomLocation>)
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertLocation(location: RoomLocation): Long
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertLocations(locations: List<RoomLocation>)
 
 	@Query("SELECT * FROM location")
 	fun getLocations(): Flow<List<RoomLocation>>

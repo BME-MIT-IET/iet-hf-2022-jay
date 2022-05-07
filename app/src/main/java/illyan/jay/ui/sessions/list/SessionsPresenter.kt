@@ -34,6 +34,7 @@ class SessionsPresenter @Inject constructor(
 }
 
 private fun DomainLocation.toUiModel() = UiLocation(
+	id = id,
 	latLng = latLng,
 	speed = speed,
 	sessionId = sessionId,
