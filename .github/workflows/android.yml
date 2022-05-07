@@ -39,7 +39,7 @@ jobs:
       env:
         DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
       run: cat app/google-services.json | base64
-      run: echo $DATA > app/google-services.json
+           echo $DATA > app/google-services.json
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
