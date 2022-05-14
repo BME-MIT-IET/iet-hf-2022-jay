@@ -81,6 +81,12 @@ on sonarcloud.io's website.
 
 <img src="assets/SonarCloud setup.png" alt="SonarCloud setup page contains all the information you need to setup your project">
 
+I updated the ```build.gradle``` file, then
+configured the CICD pipeline to work with
+SonarCloud. I also had to create a new
+repository secret, which contained the
+token for authenticating the project.
+
 # Conclusion
 
 A CICD pipeline is hyper useful when an
