@@ -20,6 +20,15 @@ jobs:
         distribution: 'temurin'
         cache: gradle
       
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v1
+      with:
+        path: |
+            ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: |
+            ${{ runner.os }}-sonar
+        
     - name: Caching via actions/cache@v3.0.2
       uses: actions/cache@v3.0.2
       with:
@@ -29,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-
+          
     - name: Create blank local.properties file
       run: touch local.properties
 
@@ -49,3 +58,9 @@ jobs:
 
     - name: Build and Run Unit tests
       run: bash ./gradlew test
+      
+    - name: Build and analyze via SonarCloud
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew build sonarqube --info
