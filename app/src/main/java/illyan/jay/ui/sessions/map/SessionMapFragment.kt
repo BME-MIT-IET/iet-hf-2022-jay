@@ -60,7 +60,7 @@ class SessionMapFragment :
 										viewState.locations[index + 1].latLng
 									)
 								)
-								color(Color.valueOf(location.argb, ColorSpace.get(ColorSpace.Named.values().first { enum -> enum.ordinal == location.colorSpace })).toArgb())
+								color(Color.valueOf(location.argb, ColorSpace.get(location.colorSpace)).toArgb())
 							}
 						}
 					}

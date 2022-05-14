@@ -9,7 +9,6 @@
 
 package illyan.jay.ui.sessions.map
 
-import android.graphics.ColorSpace
 import illyan.jay.domain.interactor.LocationInteractor
 import illyan.jay.domain.model.DomainLocation
 import illyan.jay.ui.sessions.map.model.UiLocation
@@ -32,6 +31,5 @@ private fun DomainLocation.toUiModel() = UiLocation(
 	latLng = latLng,
 	sessionId = sessionId,
 	time = time,
-	argb = Color.MAGENTA,
-	colorSpace = ColorSpace.Named.SRGB.ordinal
+	argb = Color.MAGENTA
 )

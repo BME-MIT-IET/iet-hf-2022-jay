@@ -11,7 +11,6 @@ package illyan.jay.data.disk.dao
 
 import androidx.room.*
 import illyan.jay.data.disk.model.RoomLocation
-import illyan.jay.data.disk.model.RoomRotation
 import kotlinx.coroutines.flow.Flow
 
 @Dao

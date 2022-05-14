@@ -81,7 +81,7 @@ class SessionDiskDataSource @Inject constructor(
 	 *
 	 * @param session updates the data of the session with the same ID.
 	 *
-	 * @return number of sessions updated.
+	 * @return id of session updated.
 	 */
 	fun saveSession(session: DomainSession) = sessionDao.upsertSession(session.toRoomModel())
 
@@ -89,15 +89,13 @@ class SessionDiskDataSource @Inject constructor(
 	 * Save multiple sessions in the database.
 	 *
 	 * @param sessions updates the data of the sessions with the same ID.
-	 *
-	 * @return number of sessions updated.
 	 */
 	fun saveSessions(sessions: List<DomainSession>) =
 		sessionDao.upsertSessions(sessions.map(DomainSession::toRoomModel))
 
 	/**
 	 * Stop a session.
-	 * Sets an end date for the session and saves it into the database.
+	 * Sets an end date if not yet set for the session and saves it into the database.
 	 *
 	 * @param session setting its endTime to now,
 	 * then saving the modified value to the database.
@@ -105,20 +103,20 @@ class SessionDiskDataSource @Inject constructor(
 	 * @return id of the stopped session.
 	 */
 	fun stopSession(session: DomainSession): Long {
-		session.endTime = Date.from(Instant.now())
+		if (session.endTime == null) session.endTime = Date.from(Instant.now())
 		return saveSession(session)
 	}
 
 	/**
 	 * Stop multiple sessions.
-	 * Sets an end date for the session and saves it into the database.
+	 * Sets an end date if not yet set for the session and saves it into the database.
 	 *
 	 * @param sessions setting sessions' endTime to now,
 	 * then saving the modified values to the database.
 	 */
 	fun stopSessions(sessions: List<DomainSession>) {
 		val endTime = Date.from(Instant.now())
-		sessions.forEach { it.endTime = endTime }
+		sessions.forEach { if (it.endTime == null) it.endTime = endTime }
 		saveSessions(sessions)
 	}
 }

@@ -24,7 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -78,6 +78,25 @@ class LocationDiskDataSourceTest : TestBase() {
 
 		assertEquals(locations.filter { it.sessionId == sessionId }, result)
 		verify(exactly = 1) { mockedDao.getLocations(sessionId) }
+	}
+
+	@ExperimentalCoroutinesApi
+	@ParameterizedTest(name = "Session ID = {0}")
+	@ValueSource(longs = [1L, 2L, 3L, 4L, 5L, 6L, 0L, -1L])
+	fun `Get latest locations for a particular session with a limit`(sessionId: Long) = runTest {
+		val limit = 2L
+		val sortedRoomLocations = roomLocations.toList().sortedByDescending { it.time }
+		val sortedLocations = locations.toList().sortedByDescending { it.time }
+		every { mockedDao.getLatestLocations(sessionId, limit) } returns flowOf(sortedRoomLocations.filter { it.sessionId == sessionId }.take(limit.toInt()))
+
+		var result = listOf<DomainLocation>()
+		locationDiskDataSource.getLatestLocations(sessionId, limit).collect { result = it }
+
+		// Wait coroutine to collect the data.
+		advanceUntilIdle()
+
+		assertEquals(sortedLocations.filter { it.sessionId == sessionId }.take(limit.toInt()), result)
+		verify(exactly = 1) { mockedDao.getLatestLocations(sessionId, limit) }
 	}
 
 	@Test

@@ -23,7 +23,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -129,32 +130,35 @@ class SessionDiskDataSourceTest : TestBase() {
 		verify(exactly = 1) { mockedDao.getOngoingSessionIds() }
 	}
 
-	@ExperimentalCoroutinesApi
 	@Test
-	fun `Start a session`() = runTest {
+	fun `Start a session`() {
 		every { mockedDao.insertSession(any()) } returns sessions.size + 1L
 
 		val result = sessionDiskDataSource.startSession()
-
-		// Wait coroutine to collect the data.
-		advanceUntilIdle()
 
 		assertEquals(sessions.size + 1L, result)
 		verify(exactly = 1) { mockedDao.insertSession(any()) }
 	}
 
-	@ExperimentalCoroutinesApi
 	@Test
-	fun `Stop a session`() = runTest {
+	fun `Stop a session`() {
 		every { mockedDao.upsertSession(any()) } returns ongoingSession.id
 
 		val result = sessionDiskDataSource.stopSession(ongoingSession)
 
-		// Wait coroutine to collect the data.
-		advanceUntilIdle()
-
 		assertEquals(ongoingSession.id, result)
 		verify(exactly = 1) { mockedDao.upsertSession(any()) }
+	}
+
+	@Test
+	fun `Stop sessions`() {
+		val ongoingSession = ongoingSession.copy()
+		val session = session
+		sessionDiskDataSource.stopSessions(listOf(ongoingSession, session))
+
+		assertNotNull(ongoingSession.endTime)
+		assertEquals(this.session.endTime, session.endTime)
+		verify(exactly = 1) { mockedDao.upsertSessions(any()) }
 	}
 
 	@Test
