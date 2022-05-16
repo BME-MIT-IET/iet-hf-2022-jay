@@ -9,6 +9,9 @@
 
 package illyan.jay.domain.interactor
 
+import illyan.jay.data.disk.datasource.AccelerationDiskDataSource
+import illyan.jay.data.disk.datasource.LocationDiskDataSource
+import illyan.jay.data.disk.datasource.RotationDiskDataSource
 import illyan.jay.data.disk.datasource.SessionDiskDataSource
 import illyan.jay.domain.model.DomainSession
 import kotlinx.coroutines.flow.first
@@ -24,7 +27,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class SessionInteractor @Inject constructor(
-	private val sessionDiskDataSource: SessionDiskDataSource
+	private val sessionDiskDataSource: SessionDiskDataSource,
+	private val accelerationDiskDataSource: AccelerationDiskDataSource,
+	private val rotationDiskDataSource: RotationDiskDataSource,
+	private val locationDiskDataSource: LocationDiskDataSource
 ) {
 	/**
 	 * Get a particular session by its ID.
@@ -98,6 +104,23 @@ class SessionInteractor @Inject constructor(
 	suspend fun stopOngoingSessions() {
 		getOngoingSessions().first {
 			sessionDiskDataSource.stopSessions(it)
+			true
+		}
+	}
+
+	/**
+	 * Delete stopped sessions, whom have
+	 * their endTime properties not null.
+	 */
+	suspend fun deleteStoppedSessions() {
+		sessionDiskDataSource.getSessions().first {
+			val stoppedSessions = it.filter { session -> session.endTime != null }
+			stoppedSessions.forEach { session ->
+				accelerationDiskDataSource.deleteAccelerationsForSession(session.id)
+				rotationDiskDataSource.deleteRotationsForSession(session.id)
+				locationDiskDataSource.deleteLocationForSession(session.id)
+			}
+			sessionDiskDataSource.deleteSessions(stoppedSessions)
 			true
 		}
 	}

@@ -39,12 +39,6 @@ interface RotationDao {
 	@Delete
 	fun deleteRotation(rotation: RoomRotation)
 
-	@Query("SELECT * FROM rotation WHERE id = :id")
-	fun getRotation(id: Long): RoomRotation?
-
-	@Query("SELECT * FROM rotation WHERE sessionId = :sessionId")
-	fun getRotations(sessionId: Long): Flow<List<RoomRotation>>
-
 	@Delete
 	fun deleteRotations(rotations: List<RoomRotation>)
 
@@ -52,5 +46,16 @@ interface RotationDao {
 	fun deleteRotations()
 
 	@Query("DELETE FROM rotation WHERE sessionId = :sessionId")
-	fun deleteRotations(sessionId: Long)
+	fun deleteRotationsForSession(sessionId: Long)
+
+	@Query("SELECT * FROM rotation")
+	fun getRotations(): Flow<List<RoomRotation>>
+
+	@Query("SELECT * FROM rotation WHERE id = :id")
+	fun getRotation(id: Long): RoomRotation?
+
+	@Query("SELECT * FROM rotation WHERE sessionId = :sessionId")
+	fun getRotations(sessionId: Long): Flow<List<RoomRotation>>
+
+
 }

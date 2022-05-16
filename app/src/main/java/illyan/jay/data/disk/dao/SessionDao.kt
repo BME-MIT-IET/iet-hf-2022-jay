@@ -27,12 +27,6 @@ interface SessionDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun upsertSessions(sessions: List<RoomSession>)
 
-	@Query("SELECT * FROM session")
-	fun getSessions(): Flow<List<RoomSession>>
-
-	@Query("SELECT id FROM session")
-	fun getSessionIds(): Flow<List<Long>>
-
 	@Update
 	fun updateSession(session: RoomSession): Int
 
@@ -42,6 +36,18 @@ interface SessionDao {
 	@Delete
 	fun deleteSession(session: RoomSession)
 
+	@Delete
+	fun deleteSessions(sessions: List<RoomSession>)
+
+	@Query("DELETE FROM session")
+	fun deleteSessions()
+
+	@Query("SELECT * FROM session")
+	fun getSessions(): Flow<List<RoomSession>>
+
+	@Query("SELECT id FROM session")
+	fun getSessionIds(): Flow<List<Long>>
+
 	@Query("SELECT * FROM session WHERE id = :id LIMIT 1")
 	fun getSession(id: Long): Flow<RoomSession?>
 
@@ -50,10 +56,4 @@ interface SessionDao {
 
 	@Query("SELECT id FROM session WHERE endTime is NULL")
 	fun getOngoingSessionIds(): Flow<List<Long>>
-
-	@Delete
-	fun deleteSessions(sessions: List<RoomSession>)
-
-	@Query("DELETE FROM session")
-	fun deleteSessions()
 }
