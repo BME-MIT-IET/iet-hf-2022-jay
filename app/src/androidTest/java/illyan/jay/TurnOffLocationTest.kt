@@ -39,6 +39,12 @@ class TurnOffLocationTest {
 
     @Test
     fun turnOffLocationTest() {
+        try{
+            onView(withId(R.id.signOutButton))?.perform(click())
+        } catch(exc: Exception){
+
+        }
+
         val gz = onView(
             allOf(
                 withText("Sign in"),
@@ -74,24 +80,6 @@ class TurnOffLocationTest {
             )
         )
         materialCardView.perform(click())
-
-        val materialCardView2 = onView(
-            allOf(
-                withId(R.id.serviceOffCard),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.serviceToggleCardFlipper),
-                        childAtPosition(
-                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                            0
-                        )
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        materialCardView2.perform(click())
 
         val materialCardView3 = onView(
             allOf(
