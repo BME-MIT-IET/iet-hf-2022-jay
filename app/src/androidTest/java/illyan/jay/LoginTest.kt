@@ -30,6 +30,12 @@ class LoginTest {
 
     @Test
     fun loginTest() {
+        try{
+            onView(withId(R.id.signOutButton))?.perform(click())
+        } catch(exc: Exception){
+
+        }
+
         val gz = onView(
             allOf(
                 withText("Sign in"),
