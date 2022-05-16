@@ -125,4 +125,7 @@ class SessionDiskDataSource @Inject constructor(
 		}
 		return saveSessions(sessions)
 	}
+
+	fun deleteSessions(sessions: List<DomainSession>) =
+		sessionDao.deleteSessions(sessions.map(DomainSession::toRoomModel))
 }

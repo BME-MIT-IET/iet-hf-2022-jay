@@ -22,4 +22,16 @@
         tools:context=".MainActivity"
         tools:listitem="@layout/item_session"/>
 
+    <Button
+        android:id="@+id/deleteSessionsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/delete_sessions"
+        app:icon="@drawable/ic_round_delete_24"
+        style="@style/Widget.Material3.Button.Icon"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

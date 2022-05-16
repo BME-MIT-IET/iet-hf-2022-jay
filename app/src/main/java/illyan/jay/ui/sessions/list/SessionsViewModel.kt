@@ -24,4 +24,6 @@ class SessionsViewModel @Inject constructor(
             viewState = Ready(sessions)
         }
     }
+
+    fun deleteSessions() = executeNonBlocking { sessionsPresenter.deleteSessions() }
 }

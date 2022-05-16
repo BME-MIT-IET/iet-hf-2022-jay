@@ -72,4 +72,6 @@ class RotationDiskDataSource @Inject constructor(
 	 */
 	fun saveRotations(rotations: List<DomainRotation>) =
 		rotationDao.insertRotations(rotations.map(DomainRotation::toRoomModel))
+
+	fun deleteRotationsForSession(sessionId: Long) = rotationDao.deleteRotations(sessionId)
 }
