@@ -33,7 +33,7 @@ class SessionsPresenter @Inject constructor(
 		.map { it.map(DomainLocation::toUiModel) }
 		.flowOn(Dispatchers.IO)
 
-	suspend fun deleteSessions() = withIOContext { sessionInteractor.deleteStoppedSessions() }
+	suspend fun deleteStoppedSessions() = withIOContext { sessionInteractor.deleteStoppedSessions() }
 }
 
 private fun DomainLocation.toUiModel() = UiLocation(

@@ -114,6 +114,10 @@ class SessionInteractor @Inject constructor(
 		return sessionsStopped
 	}
 
+	/**
+	 * Delete stopped sessions, whom have
+	 * their endTime properties not null.
+	 */
 	suspend fun deleteStoppedSessions() {
 		sessionDiskDataSource.getSessions().first {
 			val stoppedSessions = it.filter { session -> session.endTime != null }

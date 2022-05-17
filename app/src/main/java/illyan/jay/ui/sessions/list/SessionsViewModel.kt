@@ -25,5 +25,5 @@ class SessionsViewModel @Inject constructor(
         }
     }
 
-    fun deleteSessions() = executeNonBlocking { sessionsPresenter.deleteSessions() }
+    fun deleteStoppedSessions() = executeNonBlocking { sessionsPresenter.deleteStoppedSessions() }
 }

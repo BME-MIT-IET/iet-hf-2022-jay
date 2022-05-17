@@ -75,5 +75,5 @@ class LocationDiskDataSource @Inject constructor(
 	fun saveLocations(locations: List<DomainLocation>) =
 		locationDao.insertLocations(locations.map(DomainLocation::toRoomModel))
 
-	fun deleteLocationForSession(sessionId: Long) = locationDao.deleteLocations(sessionId)
+	fun deleteLocationForSession(sessionId: Long) = locationDao.deleteLocationsForSession(sessionId)
 }
