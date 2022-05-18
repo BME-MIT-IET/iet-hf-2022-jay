@@ -4,6 +4,7 @@ package illyan.jay
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -38,6 +39,12 @@ class StartSessionTest {
 
     @Test
     fun startSessionTest() {
+        try{
+            onView(withId(R.id.signOutButton))?.perform(ViewActions.click())
+        } catch(exc: Exception){
+
+        }
+
         val gz = onView(
             allOf(
                 withText("Sign in"),
@@ -55,6 +62,51 @@ class StartSessionTest {
             )
         )
         gz.perform(click())
+
+        val bottomNavigationItemView = onView(
+            allOf(
+                withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView.perform(click())
+
+        val materialButton = onView(
+            allOf(
+                withId(R.id.deleteSessionsButton), withText("Delete sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.sessionsNavHost),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        materialButton.perform(click())
+
+        val bottomNavigationItemView2 = onView(
+            allOf(
+                withId(R.id.homeNavFragment), withContentDescription("Home"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView2.perform(click())
 
         val materialCardView = onView(
             allOf(
@@ -74,40 +126,7 @@ class StartSessionTest {
         )
         materialCardView.perform(click())
 
-        val materialCardView2 = onView(
-            allOf(
-                withId(R.id.serviceOffCard),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.serviceToggleCardFlipper),
-                        childAtPosition(
-                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                            0
-                        )
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        materialCardView2.perform(click())
-
-        val bottomNavigationItemView = onView(
-            allOf(
-                withId(R.id.realtimeMapNavFragment), withContentDescription("Map"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottomNavigationMain),
-                        0
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
-        )
-        bottomNavigationItemView.perform(click())
-
-        val bottomNavigationItemView2 = onView(
+        val bottomNavigationItemView3 = onView(
             allOf(
                 withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
                 childAtPosition(
@@ -120,7 +139,7 @@ class StartSessionTest {
                 isDisplayed()
             )
         )
-        bottomNavigationItemView2.perform(click())
+        bottomNavigationItemView3.perform(click())
 
         val viewGroup = onView(
             allOf(
@@ -164,15 +183,6 @@ class StartSessionTest {
         )
         textView2.check(matches(withText("Sessions")))
 
-        val recyclerView = onView(
-            allOf(
-                withId(R.id.sessionsRecycler),
-                withParent(withParent(withId(R.id.sessionsNavHost))),
-                isDisplayed()
-            )
-        )
-        recyclerView.check(matches(isDisplayed()))
-
         val cardView = onView(
             allOf(
                 withId(R.id.sessionCard),
@@ -191,14 +201,23 @@ class StartSessionTest {
         )
         frameLayout.check(matches(isDisplayed()))
 
-        val frameLayout2 = onView(
+        val button = onView(
             allOf(
-                withId(R.id.bottomNavigationMain),
-                withParent(withParent(withId(R.id.loginNavHostFragment))),
+                withId(R.id.deleteSessionsButton), withText("Delete sessions"),
+                withParent(withParent(withId(R.id.sessionsNavHost))),
                 isDisplayed()
             )
         )
-        frameLayout2.check(matches(isDisplayed()))
+        button.check(matches(isDisplayed()))
+
+        val button2 = onView(
+            allOf(
+                withId(R.id.deleteSessionsButton), withText("Delete sessions"),
+                withParent(withParent(withId(R.id.sessionsNavHost))),
+                isDisplayed()
+            )
+        )
+        button2.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

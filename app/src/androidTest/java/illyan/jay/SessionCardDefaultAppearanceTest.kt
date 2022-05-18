@@ -4,6 +4,7 @@ package illyan.jay
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -39,6 +40,12 @@ class SessionCardDefaultAppearanceTest {
 
     @Test
     fun sessionCardDefaultAppearanceTest() {
+        try{
+            onView(withId(R.id.signOutButton))?.perform(ViewActions.click())
+        } catch(exc: Exception){
+
+        }
+
         val gz = onView(
             allOf(
                 withText("Sign in"),
@@ -56,6 +63,51 @@ class SessionCardDefaultAppearanceTest {
             )
         )
         gz.perform(click())
+
+        val bottomNavigationItemView = onView(
+            allOf(
+                withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView.perform(click())
+
+        val materialButton = onView(
+            allOf(
+                withId(R.id.deleteSessionsButton), withText("Delete sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.sessionsNavHost),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        materialButton.perform(click())
+
+        val bottomNavigationItemView2 = onView(
+            allOf(
+                withId(R.id.homeNavFragment), withContentDescription("Home"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView2.perform(click())
 
         val materialCardView = onView(
             allOf(
@@ -75,9 +127,9 @@ class SessionCardDefaultAppearanceTest {
         )
         materialCardView.perform(click())
 
-        val materialCardView2 = onView(
+        val materialCardView3 = onView(
             allOf(
-                withId(R.id.serviceOffCard),
+                withId(R.id.serviceOnCard),
                 childAtPosition(
                     allOf(
                         withId(R.id.serviceToggleCardFlipper),
@@ -86,29 +138,14 @@ class SessionCardDefaultAppearanceTest {
                             0
                         )
                     ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        materialCardView2.perform(click())
-
-        val bottomNavigationItemView = onView(
-            allOf(
-                withId(R.id.realtimeMapNavFragment), withContentDescription("Map"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottomNavigationMain),
-                        0
-                    ),
                     1
                 ),
                 isDisplayed()
             )
         )
-        bottomNavigationItemView.perform(click())
+        materialCardView3.perform(click())
 
-        val bottomNavigationItemView2 = onView(
+        val bottomNavigationItemView3 = onView(
             allOf(
                 withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
                 childAtPosition(
@@ -121,7 +158,7 @@ class SessionCardDefaultAppearanceTest {
                 isDisplayed()
             )
         )
-        bottomNavigationItemView2.perform(click())
+        bottomNavigationItemView3.perform(click())
 
         val textView = onView(
             allOf(
@@ -143,7 +180,7 @@ class SessionCardDefaultAppearanceTest {
 
         val textView3 = onView(
             allOf(
-                withText("Duration"),
+                withId(R.id.sessionDuration), withText("0"),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
@@ -152,16 +189,16 @@ class SessionCardDefaultAppearanceTest {
 
         val textView4 = onView(
             allOf(
-                withText("Duration"),
+                withId(R.id.sessionDuration), withText("0"),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
         )
-        textView4.check(matches(withText("Duration")))
+        textView4.check(matches(withText("0")))
 
         val textView5 = onView(
             allOf(
-                withId(R.id.sessionDuration), withText("0"),
+                withId(R.id.sessionDistance), withText("0.00"),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
@@ -170,16 +207,16 @@ class SessionCardDefaultAppearanceTest {
 
         val textView6 = onView(
             allOf(
-                withId(R.id.sessionDuration), withText("0"),
+                withId(R.id.sessionDistance), withText("0.00"),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
         )
-        textView6.check(matches(withText("0")))
+        textView6.check(matches(withText("0.00")))
 
         val textView7 = onView(
             allOf(
-                withText("min"),
+                withId(R.id.sessionStart),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
@@ -188,129 +225,12 @@ class SessionCardDefaultAppearanceTest {
 
         val textView8 = onView(
             allOf(
-                withText("min"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView8.check(matches(withText("min")))
-
-        val textView9 = onView(
-            allOf(
-                withText("Distance"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView9.check(matches(isDisplayed()))
-
-        val textView10 = onView(
-            allOf(
-                withText("Distance"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView10.check(matches(withText("Distance")))
-
-        val textView11 = onView(
-            allOf(
-                withText("km"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView11.check(matches(isDisplayed()))
-
-        val textView12 = onView(
-            allOf(
-                withText("km"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView12.check(matches(withText("km")))
-
-        val textView13 = onView(
-            allOf(
-                withId(R.id.sessionDistance), withText("0.00"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView13.check(matches(isDisplayed()))
-
-        val textView14 = onView(
-            allOf(
-                withId(R.id.sessionDistance), withText("0.00"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView14.check(matches(withText("0.00")))
-
-        val textView15 = onView(
-            allOf(
-                withText("Start"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView15.check(matches(isDisplayed()))
-
-        val textView16 = onView(
-            allOf(
-                withText("Start"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView16.check(matches(withText("Start")))
-
-        val textView17 = onView(
-            allOf(
-                withId(R.id.sessionStart), withText("11:25 May 16"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView17.check(matches(isDisplayed()))
-
-        val textView18 = onView(
-            allOf(
-                withText("End"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView18.check(matches(isDisplayed()))
-
-        val textView19 = onView(
-            allOf(
-                withText("End"),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView19.check(matches(withText("End")))
-
-        val textView20 = onView(
-            allOf(
                 withId(R.id.sessionEnd),
                 withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
                 isDisplayed()
             )
         )
-        textView20.check(matches(isDisplayed()))
-
-        val textView21 = onView(
-            allOf(
-                withId(R.id.sessionEnd),
-                withParent(withParent(IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java))),
-                isDisplayed()
-            )
-        )
-        textView21.check(matches(withText("")))
+        textView8.check(matches(isDisplayed()))
 
         val button = onView(
             allOf(
@@ -321,14 +241,23 @@ class SessionCardDefaultAppearanceTest {
         )
         button.check(matches(isDisplayed()))
 
-        val button2 = onView(
+        val cardView = onView(
             allOf(
-                withId(R.id.viewInMapButton),
-                withParent(withParent(withId(R.id.sessionCard))),
+                withId(R.id.sessionCard),
+                withParent(withParent(withId(R.id.sessionsRecycler))),
                 isDisplayed()
             )
         )
-        button2.check(matches(isDisplayed()))
+        cardView.check(matches(isDisplayed()))
+
+        val cardView2 = onView(
+            allOf(
+                withId(R.id.sessionCard),
+                withParent(withParent(withId(R.id.sessionsRecycler))),
+                isDisplayed()
+            )
+        )
+        cardView2.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

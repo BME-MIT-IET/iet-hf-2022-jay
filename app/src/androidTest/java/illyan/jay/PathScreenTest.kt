@@ -4,6 +4,7 @@ package illyan.jay
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -38,6 +39,12 @@ class PathScreenTest {
 
     @Test
     fun pathScreenTest() {
+        try{
+            onView(withId(R.id.signOutButton))?.perform(ViewActions.click())
+        } catch(exc: Exception){
+
+        }
+
         val gz = onView(
             allOf(
                 withText("Sign in"),
@@ -55,6 +62,51 @@ class PathScreenTest {
             )
         )
         gz.perform(click())
+
+        val bottomNavigationItemView = onView(
+            allOf(
+                withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView.perform(click())
+
+        val materialButton = onView(
+            allOf(
+                withId(R.id.deleteSessionsButton), withText("Delete sessions"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.sessionsNavHost),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        materialButton.perform(click())
+
+        val bottomNavigationItemView2 = onView(
+            allOf(
+                withId(R.id.homeNavFragment), withContentDescription("Home"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottomNavigationMain),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView2.perform(click())
 
         val materialCardView = onView(
             allOf(
@@ -74,9 +126,9 @@ class PathScreenTest {
         )
         materialCardView.perform(click())
 
-        val materialCardView2 = onView(
+        val materialCardView3 = onView(
             allOf(
-                withId(R.id.serviceOffCard),
+                withId(R.id.serviceOnCard),
                 childAtPosition(
                     allOf(
                         withId(R.id.serviceToggleCardFlipper),
@@ -85,29 +137,14 @@ class PathScreenTest {
                             0
                         )
                     ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        materialCardView2.perform(click())
-
-        val bottomNavigationItemView = onView(
-            allOf(
-                withId(R.id.realtimeMapNavFragment), withContentDescription("Map"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottomNavigationMain),
-                        0
-                    ),
                     1
                 ),
                 isDisplayed()
             )
         )
-        bottomNavigationItemView.perform(click())
+        materialCardView3.perform(click())
 
-        val bottomNavigationItemView2 = onView(
+        val bottomNavigationItemView3 = onView(
             allOf(
                 withId(R.id.sessionsNavFragment), withContentDescription("Sessions"),
                 childAtPosition(
@@ -120,9 +157,9 @@ class PathScreenTest {
                 isDisplayed()
             )
         )
-        bottomNavigationItemView2.perform(click())
+        bottomNavigationItemView3.perform(click())
 
-        val materialButton = onView(
+        val materialButton2 = onView(
             allOf(
                 withId(R.id.viewInMapButton),
                 childAtPosition(
@@ -135,7 +172,7 @@ class PathScreenTest {
                 isDisplayed()
             )
         )
-        materialButton.perform(click())
+        materialButton2.perform(click())
 
         val viewGroup = onView(
             allOf(
@@ -150,6 +187,20 @@ class PathScreenTest {
             )
         )
         viewGroup.check(matches(isDisplayed()))
+
+        val imageButton = onView(
+            allOf(
+                withContentDescription("Navigate up"),
+                withParent(
+                    allOf(
+                        withId(androidx.appcompat.R.id.action_bar),
+                        withParent(withId(androidx.appcompat.R.id.action_bar_container))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        imageButton.check(matches(isDisplayed()))
 
         val textView = onView(
             allOf(
@@ -178,20 +229,6 @@ class PathScreenTest {
             )
         )
         textView2.check(matches(withText("Path")))
-
-        val imageButton = onView(
-            allOf(
-                withContentDescription("Navigate up"),
-                withParent(
-                    allOf(
-                        withId(androidx.appcompat.R.id.action_bar),
-                        withParent(withId(androidx.appcompat.R.id.action_bar_container))
-                    )
-                ),
-                isDisplayed()
-            )
-        )
-        imageButton.check(matches(isDisplayed()))
 
         val frameLayout = onView(
             allOf(
