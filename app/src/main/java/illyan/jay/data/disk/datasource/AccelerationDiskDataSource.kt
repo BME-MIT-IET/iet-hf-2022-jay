@@ -69,7 +69,7 @@ class AccelerationDiskDataSource @Inject constructor(
 	 * @param accelerations list of acceleration data saved onto the Room database.
 	 */
 	fun saveAccelerations(accelerations: List<DomainAcceleration>) =
-		accelerationDao.updateAccelerations(accelerations.map(DomainAcceleration::toRoomModel))
+		accelerationDao.upsertAccelerations(accelerations.map(DomainAcceleration::toRoomModel))
 
 	fun deleteAccelerationsForSession(sessionId: Long) = accelerationDao.deleteAccelerationsForSession(sessionId)
 }

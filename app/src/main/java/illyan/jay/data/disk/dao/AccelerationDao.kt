@@ -27,9 +27,6 @@ interface AccelerationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsertAccelerations(accelerations: List<RoomAcceleration>)
 
-    @Query("SELECT * FROM acceleration")
-    fun getAccelerations(): Flow<List<RoomAcceleration>>
-
     @Update
     fun updateAcceleration(acceleration: RoomAcceleration): Int
 
@@ -47,9 +44,6 @@ interface AccelerationDao {
 
     @Query("DELETE FROM acceleration WHERE sessionId = :sessionId")
     fun deleteAccelerationsForSession(sessionId: Long)
-
-    @Query("SELECT * FROM acceleration")
-    fun getAccelerations(): Flow<List<RoomAcceleration>>
 
     @Query("SELECT * FROM acceleration WHERE id = :id")
     fun getAcceleration(id: Long): RoomAcceleration?

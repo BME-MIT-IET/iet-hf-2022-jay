@@ -27,9 +27,6 @@ interface RotationDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun upsertRotations(rotations: List<RoomRotation>)
 
-	@Query("SELECT * FROM rotation")
-	fun getRotations(): Flow<List<RoomRotation>>
-
 	@Update
 	fun updateRotation(rotation: RoomRotation): Int
 
@@ -47,9 +44,6 @@ interface RotationDao {
 
 	@Query("DELETE FROM rotation WHERE sessionId = :sessionId")
 	fun deleteRotationsForSession(sessionId: Long)
-
-	@Query("SELECT * FROM rotation")
-	fun getRotations(): Flow<List<RoomRotation>>
 
 	@Query("SELECT * FROM rotation WHERE id = :id")
 	fun getRotation(id: Long): RoomRotation?
