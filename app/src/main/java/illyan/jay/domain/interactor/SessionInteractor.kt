@@ -63,7 +63,7 @@ class SessionInteractor @Inject constructor(
 	 *
 	 * @param session updates the data of the session with the same ID.
 	 *
-	 * @return number of sessions updated.
+	 * @return id of session updated.
 	 */
 	fun saveSession(session: DomainSession) = sessionDiskDataSource.saveSession(session)
 
@@ -71,8 +71,6 @@ class SessionInteractor @Inject constructor(
 	 * Save multiple sessions.
 	 *
 	 * @param sessions updates the data of the sessions with the same ID.
-	 *
-	 * @return number of sessions updated.
 	 */
 	fun saveSessions(sessions: List<DomainSession>) = sessionDiskDataSource.saveSessions(sessions)
 
@@ -90,21 +88,17 @@ class SessionInteractor @Inject constructor(
 	 *
 	 * @param session needed to be stopped.
 	 *
-	 * @return number of sessions stopped.
+	 * @return id of session stopped.
 	 */
 	fun stopSession(session: DomainSession) = sessionDiskDataSource.stopSession(session)
 
 	/**
 	 * Stop all ongoing sessions.
-	 *
-	 * @return number of sessions stopped.
 	 */
-	suspend fun stopOngoingSessions(): Int {
-		var sessionsStopped = 0
+	suspend fun stopOngoingSessions() {
 		getOngoingSessions().first {
-			sessionsStopped = sessionDiskDataSource.stopSessions(it)
+			sessionDiskDataSource.stopSessions(it)
 			true
 		}
-		return sessionsStopped
 	}
 }

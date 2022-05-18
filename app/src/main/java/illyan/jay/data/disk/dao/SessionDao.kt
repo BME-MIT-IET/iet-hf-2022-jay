@@ -19,7 +19,13 @@ interface SessionDao {
 	fun insertSession(session: RoomSession): Long
 
 	@Insert
-	fun insertSessions(sessions: RoomSession)
+	fun insertSessions(sessions: List<RoomSession>)
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertSession(session: RoomSession): Long
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertSessions(sessions: List<RoomSession>)
 
 	@Query("SELECT * FROM session")
 	fun getSessions(): Flow<List<RoomSession>>

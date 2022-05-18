@@ -21,6 +21,12 @@ interface AccelerationDao {
     @Insert
     fun insertAccelerations(accelerations: List<RoomAcceleration>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertAcceleration(acceleration: RoomAcceleration): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun upsertAccelerations(accelerations: List<RoomAcceleration>)
+
     @Query("SELECT * FROM acceleration")
     fun getAccelerations(): Flow<List<RoomAcceleration>>
 

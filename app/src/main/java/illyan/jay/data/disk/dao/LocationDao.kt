@@ -21,6 +21,12 @@ interface LocationDao {
 	@Insert
 	fun insertLocations(locations: List<RoomLocation>)
 
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertLocation(location: RoomLocation): Long
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun upsertLocations(locations: List<RoomLocation>)
+
 	@Query("SELECT * FROM location")
 	fun getLocations(): Flow<List<RoomLocation>>
 
