@@ -10,6 +10,9 @@
 package illyan.jay.interactor
 
 import illyan.jay.TestBase
+import illyan.jay.data.disk.datasource.AccelerationDiskDataSource
+import illyan.jay.data.disk.datasource.LocationDiskDataSource
+import illyan.jay.data.disk.datasource.RotationDiskDataSource
 import illyan.jay.data.disk.datasource.SessionDiskDataSource
 import illyan.jay.domain.interactor.SessionInteractor
 import illyan.jay.domain.model.DomainSession
@@ -34,27 +37,41 @@ import kotlin.random.Random
 @ExtendWith(MockKExtension::class)
 class SessionInteractorTest : TestBase() {
 
-    private lateinit var mockedSessionDiskDataSource: SessionDiskDataSource
-    private lateinit var sessionInteractor: SessionInteractor
+	private lateinit var mockedSessionDiskDataSource: SessionDiskDataSource
+	private lateinit var mockedAccelerationDiskDataSource: AccelerationDiskDataSource
+	private lateinit var mockedRotationDiskDataSource: RotationDiskDataSource
+	private lateinit var mockedLocationDiskDataSource: LocationDiskDataSource
+	private lateinit var sessionInteractor: SessionInteractor
 
-    private val random = Random(Instant.now().nano)
-    private val now = Instant.now()
+	private val random = Random(Instant.now().nano)
+	private val now = Instant.now()
 
-    private val session = DomainSession(4, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 4.0)
-    private val ongoingSession = DomainSession(5, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), null, 5.0)
-    private val sessions = listOf(
-        DomainSession(1,  Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 1.0),
-        DomainSession(2,  Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 2.0),
-        DomainSession(3,  Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 3.0),
-        session,
-        ongoingSession
-    )
+	private val session = DomainSession(4, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 4.0)
+	private val ongoingSession = DomainSession(5, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), null, 5.0)
+	private val sessions = listOf(
+		DomainSession(1, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 1.0),
+		DomainSession(2, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 2.0),
+		DomainSession(3, Date.from(Instant.ofEpochMilli(random.nextLong(now.toEpochMilli() - TimeUtils.DAY_IN_MILLIS, now.toEpochMilli()))), Date.from(now), 3.0),
+		session,
+		ongoingSession
+	)
 
-    @BeforeEach
-    fun initEach() {
-        mockedSessionDiskDataSource = mockk(relaxed = true)
-        sessionInteractor = spyk(SessionInteractor(mockedSessionDiskDataSource))
-    }
+	@BeforeEach
+	fun initEach() {
+		mockedSessionDiskDataSource = mockk(relaxed = true)
+		mockedAccelerationDiskDataSource = mockk(relaxed = true)
+		mockedRotationDiskDataSource = mockk(relaxed = true)
+		mockedLocationDiskDataSource = mockk(relaxed = true)
+
+		sessionInteractor = spyk(
+			SessionInteractor(
+				mockedSessionDiskDataSource,
+				mockedAccelerationDiskDataSource,
+				mockedRotationDiskDataSource,
+				mockedLocationDiskDataSource
+			)
+		)
+	}
 
 	@ExperimentalCoroutinesApi
 	@ParameterizedTest(name = "Session ID = {0}")
@@ -105,7 +122,8 @@ class SessionInteractorTest : TestBase() {
 	@ExperimentalCoroutinesApi
 	@Test
 	fun `Get ongoing session ids`() = runTest {
-		every { mockedSessionDiskDataSource.getOngoingSessionIds() } returns flowOf(sessions.filter { it.endTime == null }.map { it.id })
+		every { mockedSessionDiskDataSource.getOngoingSessionIds() } returns flowOf(sessions.filter { it.endTime == null }
+			.map { it.id })
 
 		var result = listOf<Long>()
 		sessionInteractor.getOngoingSessionIds().collect { result = it }
@@ -158,20 +176,20 @@ class SessionInteractorTest : TestBase() {
 		}
 	}
 
-    @Test
-    fun `Save single session data`() {
-        every { mockedSessionDiskDataSource.saveSession(session) } returns session.id
+	@Test
+	fun `Save single session data`() {
+		every { mockedSessionDiskDataSource.saveSession(session) } returns session.id
 
-        val result = sessionInteractor.saveSession(session)
+		val result = sessionInteractor.saveSession(session)
 
-        assertEquals(session.id, result)
-        verify(exactly = 1) { mockedSessionDiskDataSource.saveSession(session) }
-    }
+		assertEquals(session.id, result)
+		verify(exactly = 1) { mockedSessionDiskDataSource.saveSession(session) }
+	}
 
-    @Test
-    fun `Save multiple session data`() {
-        sessionInteractor.saveSessions(sessions)
+	@Test
+	fun `Save multiple session data`() {
+		sessionInteractor.saveSessions(sessions)
 
-        verify(exactly = 1) { mockedSessionDiskDataSource.saveSessions(sessions) }
-    }
+		verify(exactly = 1) { mockedSessionDiskDataSource.saveSessions(sessions) }
+	}
 }

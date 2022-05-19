@@ -119,4 +119,7 @@ class SessionDiskDataSource @Inject constructor(
 		sessions.forEach { if (it.endTime == null) it.endTime = endTime }
 		saveSessions(sessions)
 	}
+
+	fun deleteSessions(sessions: List<DomainSession>) =
+		sessionDao.deleteSessions(sessions.map(DomainSession::toRoomModel))
 }

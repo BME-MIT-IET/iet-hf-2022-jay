@@ -27,9 +27,6 @@ interface LocationDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun upsertLocations(locations: List<RoomLocation>)
 
-	@Query("SELECT * FROM location")
-	fun getLocations(): Flow<List<RoomLocation>>
-
 	@Update
 	fun updateLocation(location: RoomLocation): Int
 
@@ -39,20 +36,20 @@ interface LocationDao {
 	@Delete
 	fun deleteLocation(location: RoomLocation)
 
-	@Query("SELECT * FROM location WHERE id = :id")
-	fun getLocation(id: Long): RoomLocation?
-
-	@Query("SELECT * FROM location WHERE sessionId = :sessionId")
-	fun getLocations(sessionId: Long): Flow<List<RoomLocation>>
-
 	@Delete
-	fun deleteLocations(locations: List<RoomLocation>)
+	fun deleteLocationsForSession(locations: List<RoomLocation>)
 
 	@Query("DELETE FROM location")
 	fun deleteLocations()
 
 	@Query("DELETE FROM location WHERE sessionId = :sessionId")
-	fun deleteLocations(sessionId: Long)
+	fun deleteLocationsForSession(sessionId: Long)
+
+	@Query("SELECT * FROM location WHERE id = :id")
+	fun getLocation(id: Long): RoomLocation?
+
+	@Query("SELECT * FROM location WHERE sessionId = :sessionId")
+	fun getLocations(sessionId: Long): Flow<List<RoomLocation>>
 
 	@Query("SELECT * FROM location WHERE sessionId = :sessionId ORDER BY id DESC LIMIT :limit")
 	fun getLatestLocations(sessionId: Long, limit: Long): Flow<List<RoomLocation>>
