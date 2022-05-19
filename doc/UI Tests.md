@@ -20,7 +20,7 @@ The goal of writing UI tests is to verify that we actually see what we should se
 
 ## **Used tools**
 
-There are several tools available for UI testing like Appium or Selenium but the recommended one for Android applications is **_Espresso_**. Besides, there's a plugin called **_Espresso Test Recorder_** which makes generating Espresso UI tests possible by interactig with the UI. This way, we don't need to manually write long and complex UI tests, instead, the plugin generates them for us. Of course, we can edit these test scenarios if necessary to customize our tests.
+There are several tools available for UI testing like Appium or Selenium but the recommended one for Android applications is **_Espresso_**. Besides, there's an Android Studio plugin called **_Espresso Test Recorder_** which makes generating Espresso UI tests possible by interactig with the UI. This way, we don't need to manually write long and complex UI tests, instead, the plugin generates them for us. Of course, we can edit these test scenarios if necessary to customize our tests.
 
 ## **Tests**
 
@@ -54,7 +54,7 @@ There are several tools available for UI testing like Appium or Selenium but the
 
 - **SessionCardDefaultAppearanceTest**
 
-  The previously mentioned session card displays default values when the session recording is still in progress. The session suration should show 0 minutes, and the session distance should show 0.00 km
+  The previously mentioned session card displays default values when the session recording is still in progress. The session duration should show 0 minutes, and the session distance should show 0.00 km
 
 - **OneMinuteFixLocationSessionTest**
 
