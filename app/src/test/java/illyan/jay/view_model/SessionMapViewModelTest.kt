@@ -1,12 +1,12 @@
 package illyan.jay.view_model
 
-import android.graphics.Color
 import co.zsmb.rainbowcake.test.assertObserved
 import co.zsmb.rainbowcake.test.base.ViewModelTest
 import co.zsmb.rainbowcake.test.observeStateAndEvents
 import com.google.android.gms.maps.model.LatLng
 import illyan.jay.ui.sessions.map.*
 import illyan.jay.ui.sessions.map.model.UiLocation
+import illyan.jay.util.Color
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -32,7 +32,7 @@ class SessionMapViewModelTest: ViewModelTest() {
     @Test
     fun `Load path loads existing session`() = runTest {
         val mockLocations = listOf(
-            UiLocation(0, LatLng(0.0, 0.0), 0, Date(), Color())
+            UiLocation(0, LatLng(0.0, 0.0), 0, Date(), Color.RED)
         )
 
         every { mockPresenter.getLocations(any()) } returns flowOf(mockLocations)
