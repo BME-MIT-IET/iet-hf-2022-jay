@@ -30,7 +30,7 @@ class MapAppearanceTest {
 
     @Rule
     @JvmField
-    var mGrantPermissionRule =
+    var mGrantPermissionRule: GrantPermissionRule =
         GrantPermissionRule.grant(
             "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.FOREGROUND_SERVICE"
@@ -40,7 +40,7 @@ class MapAppearanceTest {
     fun mapAppearanceTest() {
         try{
             onView(withId(R.id.signOutButton))?.perform(click())
-        } catch(exc: Exception){
+        } catch(_: Exception){
 
         }
 

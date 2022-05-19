@@ -4,7 +4,6 @@ package illyan.jay
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -32,7 +31,7 @@ class SessionCardDefaultAppearanceTest {
 
     @Rule
     @JvmField
-    var mGrantPermissionRule =
+    var mGrantPermissionRule: GrantPermissionRule =
         GrantPermissionRule.grant(
             "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.FOREGROUND_SERVICE"
@@ -41,8 +40,8 @@ class SessionCardDefaultAppearanceTest {
     @Test
     fun sessionCardDefaultAppearanceTest() {
         try{
-            onView(withId(R.id.signOutButton))?.perform(ViewActions.click())
-        } catch(exc: Exception){
+            onView(withId(R.id.signOutButton))?.perform(click())
+        } catch(_: Exception){
 
         }
 
